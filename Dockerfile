@@ -17,15 +17,15 @@ COPY populate-longopts.sh /tmp/
 COPY investigate.yml /tmp/
 
 # Unpack Siren Investigate zipfile
-RUN    mkdir -p /opt \
+RUN bash -c "mkdir -p /opt \
     && unzip -q /tmp/${SIREN_ZIPFILE} -d /opt/ \
     && rm /tmp/${SIREN_ZIPFILE} \
-    && find /opt/ -depth -type d -name "siren-investigate*" -exec mv '{}' /opt/siren-investigate \; \
+    && find /opt/ -depth -type d -name 'siren-investigate*' -exec mv '{}' /opt/siren-investigate \; \
     && mv /tmp/populate-longopts.sh /opt/siren-investigate/bin/populate-longopts.sh \
     && mv /tmp/investigate.yml /opt/siren-investigate/config/investigate.yml \
     && addgroup siren && adduser --disabled-password --gecos '' --ingroup siren siren \
     && chown -R siren:siren /opt/siren-investigate/ \
-    && chmod +x /opt/siren-investigate/bin/populate-longopts.sh
+    && chmod +x /opt/siren-investigate/bin/populate-longopts.sh"
 
 # Siren Investigate configuration volume
 VOLUME ["/opt/siren-investigate/config"]
